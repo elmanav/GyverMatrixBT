@@ -7,6 +7,7 @@
 
 // подключаем внешние файлы с картинками
 //#include "bitmap2.h"
+//#include "superheroes.h"
 
 
 /*
@@ -62,22 +63,22 @@
 //  break;
 
 // не забудьте указать количество режимов для корректного переключения с последнего на первый
-#define MODES_AMOUNT 28   // количество кастомных режимов (которые переключаются сами или кнопкой)
+#define MODES_AMOUNT 26   // количество кастомных режимов (которые переключаются сами или кнопкой)
 
 void customModes() {
-  switch (thisMode) {
+  switch (thisMode + 1) {
 
-    case 0: fillString("КРАСНЫЙ", CRGB::Red);
+    // case 0: fillString("С НОВЫМ 2021 ГОДОМ", CRGB::Red);
+    //   break;
+    case 1: lavaNoise();
       break;
-    case 1: fillString("РАДУГА", 1);
-      break;
-    case 2: fillString("RGB LED", 2);
+    case 2: snowRoutine();
       break;
     case 3: madnessNoise();
       break;
     case 4: cloudNoise();
       break;
-    case 5: lavaNoise();
+    case 5: cloudNoise();
       break;
     case 6: plasmaNoise();
       break;
@@ -91,8 +92,10 @@ void customModes() {
       break;
     case 11: oceanNoise();
       break;
-    case 12: snowRoutine();
+      case 12: oceanNoise();
       break;
+    // case 12: fillString("СЧАСТЛИВОГО НОВОГО ГОДА", 2);
+    //   break;
     case 13: sparklesRoutine();
       break;
     case 14: matrixRoutine();
@@ -109,60 +112,57 @@ void customModes() {
       break;
     case 20: fireRoutine();
       break;
-    case 21: snakeRoutine();
-      break;
-    case 22: tetrisRoutine();
-      break;
-    case 23: mazeRoutine();
-      break;
-    case 24: runnerRoutine();
-      break;
-    case 25: flappyRoutine();
-      break;
-    case 26: arkanoidRoutine();
-      break;
-    case 27: clockRoutine();
-      break;
-
-
+   case 21: tetrisRoutine();
+     break;
+   case 22: mazeRoutine();
+     break;
+   case 23: mazeRoutine();
+     break;
+   case 24: runnerRoutine();
+     break;
+   case 25: flappyRoutine();
+     break;
+   case 26: arkanoidRoutine();
+     break;   
   }
+  
 
 }
 
 // функция загрузки картинки в матрицу. должна быть здесь, иначе не работает =)
-void loadImage(uint16_t (*frame)[WIDTH]) {
-  for (byte i = 0; i < WIDTH; i++)
-    for (byte j = 0; j < HEIGHT; j++)
-      drawPixelXY(i, j, gammaCorrection(expandColor((pgm_read_word(&(frame[HEIGHT - j - 1][i]))))));
-  // да, тут происходит лютенький п@здец, а именно:
-  // 1) pgm_read_word - восстанавливаем из PROGMEM (флэш памяти) цвет пикселя в 16 битном формате по его координатам
-  // 2) expandColor - расширяем цвет до 24 бит (спасибо adafruit)
-  // 3) gammaCorrection - проводим коррекцию цвета для более корректного отображения
-}
-timerMinim gifTimer(D_GIF_SPEED);
-
-// ********************** ПРИМЕРЫ ВЫВОДА КАРТИНОК ***********************
-
-// Внимание! Если размер матрицы не совпадает с исходным размером матрицы в скетче
-// (если вы только что  его скачали), то нужно удалить/закомментировать данные функции!
+//void loadImage(uint16_t (*frame)[WIDTH]) {
+//  for (byte i = 0; i < WIDTH; i++)
+//    for (byte j = 0; j < HEIGHT; j++)
+//      drawPixelXY(i, j, gammaCorrection(expandColor((pgm_read_word(&(frame[HEIGHT - j - 1][i]))))));
+//  // да, тут происходит лютенький п@здец, а именно:
+//  // 1) pgm_read_word - восстанавливаем из PROGMEM (флэш памяти) цвет пикселя в 16 битном формате по его координатам
+//  // 2) expandColor - расширяем цвет до 24 бит (спасибо adafruit)
+//  // 3) gammaCorrection - проводим коррекцию цвета для более корректного отображения
+//}
+//timerMinim gifTimer(D_GIF_SPEED);
 //
-/*
-  // показать картинку
-  void imageRoutine1() {
-  if (loadingFlag) {
-    loadingFlag = false;
-    loadImage(frame00);
-  }
-  }
+//// ********************** ПРИМЕРЫ ВЫВОДА КАРТИНОК ***********************
+//
+//// Внимание! Если размер матрицы не совпадает с исходным размером матрицы в скетче
+//// (если вы только что  его скачали), то нужно удалить/закомментировать данные функции!
+////
+//
+//  // показать картинку
+//  void imageRoutine1() {
+//  if (loadingFlag) {
+//    loadingFlag = false;
+//    loadImage(frame00);
+//  }
+//  }
+//
+//  void animation1() {
+//  if (gifTimer.isReady()) {
+//    frameNum++;
+//    if (frameNum >= sizeof(framesArray)) frameNum = 0;
+//    loadImage(framesArray[frameNum]);
+//  }
+//  }
 
-  void animation1() {
-  if (gifTimer.isReady()) {
-    frameNum++;
-    if (frameNum >= sizeof(framesArray)) frameNum = 0;
-    loadImage(framesArray[frameNum]);
-  }
-  }
-*/
 
 // ********************* ОСНОВНОЙ ЦИКЛ РЕЖИМОВ *******************
 #if (SMOOTH_CHANGE == 1)
