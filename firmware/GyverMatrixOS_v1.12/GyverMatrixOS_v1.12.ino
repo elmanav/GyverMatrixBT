@@ -16,7 +16,7 @@
 // ************************ МАТРИЦА *************************
 // если прошивка не лезет в Arduino NANO - отключай режимы! Строка 60 и ниже
 
-#define BRIGHTNESS 150        // стандартная маскимальная яркость (0-255)
+#define BRIGHTNESS 170        // стандартная маскимальная яркость (0-255)
 #define CURRENT_LIMIT 2700    // лимит по току в миллиамперах, автоматически управляет яркостью (пожалей свой блок питания!) 0 - выключить лимит
 
 #define WIDTH 24              // ширина матрицы
@@ -172,9 +172,9 @@ timerMinim changeTimer(70);
 timerMinim halfsecTimer(500);
 
 void setup() {
-#if (BT_MODE == 1)
-  Serial.begin(9600);
-#endif
+
+Serial.begin(9600);
+
 
 #if (MCU_TYPE == 1)
   WiFi.setSleepMode(WIFI_NONE_SLEEP);
@@ -201,5 +201,5 @@ void setup() {
 }
 
 void loop() {
-  customRoutine();  
+  customRoutine();
 }

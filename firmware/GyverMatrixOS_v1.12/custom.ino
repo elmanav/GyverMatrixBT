@@ -62,71 +62,93 @@
 // case <номер>: <эффект>;
 //  break;
 
-// не забудьте указать количество режимов для корректного переключения с последнего на первый
-#define MODES_AMOUNT 26   // количество кастомных режимов (которые переключаются сами или кнопкой)
+void HolidayGreetings(){
+  fillString("С НАСТУПАЮЩИМ! ДОБРА, УДАЧИ, РАДОСТИ, ИСПОЛНЕНИЯ ЖЕЛАНИЙ.", 1);
+}
+
+void HappyNewYearRus(){
+  fillString("С НОВЫМ 2022 ГОДОМ!!! СЧАСТЬЯ, УЛЫБОК, ТЕПЛА И УЮТА. ЗАВТРА БУДЕТ ЛУЧШЕ, ЧЕМ ВЧЕРА.", 1);
+}
+void HappyNewYear(){
+  fillString("HAPPY NEW YEAR. 2022", 2);
+}
+
+void HappyNewYearNorthis(){
+  fillString("С НОВЫМ 2022 ГОДОМ, NORTHIS!", 1);
+}
+
+typedef void (*fEffect) ();
+fEffect fEffects[] = 
+{
+  snowRoutine,
+  HappyNewYearRus,
+  snowRoutine,
+  HappyNewYear,
+  fireRoutine
+};
+int sizeOfEffects = sizeof(fEffects) / sizeof(fEffect);
 
 void customModes() {
-  switch (thisMode + 1) {
+  fEffect current = fEffects[thisMode];
+  (*current)();  
+  // switch (thisMode) {
 
-    // case 0: fillString("С НОВЫМ 2021 ГОДОМ", CRGB::Red);
-    //   break;
-    case 1: lavaNoise();
-      break;
-    case 2: snowRoutine();
-      break;
-    case 3: madnessNoise();
-      break;
-    case 4: cloudNoise();
-      break;
-    case 5: cloudNoise();
-      break;
-    case 6: plasmaNoise();
-      break;
-    case 7: rainbowNoise();
-      break;
-    case 8: rainbowStripeNoise();
-      break;
-    case 9: zebraNoise();
-      break;
-    case 10: forestNoise();
-      break;
-    case 11: oceanNoise();
-      break;
-      case 12: oceanNoise();
-      break;
-    // case 12: fillString("СЧАСТЛИВОГО НОВОГО ГОДА", 2);
-    //   break;
-    case 13: sparklesRoutine();
-      break;
-    case 14: matrixRoutine();
-      break;
-    case 15: starfallRoutine();
-      break;
-    case 16: ballRoutine();
-      break;
-    case 17: ballsRoutine();
-      break;
-    case 18: rainbowRoutine();
-      break;
-    case 19: rainbowDiagonalRoutine();
-      break;
-    case 20: fireRoutine();
-      break;
-   case 21: tetrisRoutine();
-     break;
-   case 22: mazeRoutine();
-     break;
-   case 23: mazeRoutine();
-     break;
-   case 24: runnerRoutine();
-     break;
-   case 25: flappyRoutine();
-     break;
-   case 26: arkanoidRoutine();
-     break;   
-  }
+  //   // case 0: fillString("С НОВЫМ 2022 ГОДОМ", CRGB::Red);
+  //   //    break;
+  //   // case 1: lavaNoise();
+  //   //   break;
+  //   // case 2: snowRoutine();
+  //   //   break;
+  //   // case 3: madnessNoise();
+  //   //   break;
+  //   // case 4: cloudNoise();
+  //   //   break;
+  //   // case 5: cloudNoise();
+  //   //   break;
+  //   // case 6: plasmaNoise();
+  //   //   break;
+  //   // case 7: rainbowNoise();
+  //   //   break;
+  //   // case 8: rainbowStripeNoise();
+  //   //   break;
+  //   // case 9: zebraNoise();
+  //   //   break;
+  //   // case 10: forestNoise();
+  //   //   break;
+  //   // case 11: oceanNoise();
+  //   //   break;      
+  //   // case 12: fillString("СЧАСТЛИВОГО НОВОГО ГОДА", 2);
+  //   //    break;
+  //   // case 13: sparklesRoutine();
+  //   //   break;
+  //   // case 14: matrixRoutine();
+  //   //   break;
+  //   // case 15: starfallRoutine();
+  //   //   break;
+  //   // case 16: ballRoutine();
+  //   //   break;
+  //   // case 17: ballsRoutine();
+  //   //   break;
+  //   // case 18: rainbowRoutine();
+  //   //   break;
+  //   // case 19: rainbowDiagonalRoutine();
+  //   //   break;
+  //   // case 20: fireRoutine();
+  //   //   break;
+  //   // case 21: tetrisRoutine();
+  //   //  break;
+  //   // case 22: mazeRoutine();
+  //   //   break;
+  //   // case 23: mazeRoutine();
+  //   //   break;
+  //   // case 24: runnerRoutine();
+  //   //   break;
+  //   // case 25: flappyRoutine();
+  //   //   break;
+  //   // case 26: arkanoidRoutine();
+  //   //   break;
+  // }
   
-
 }
 
 // функция загрузки картинки в матрицу. должна быть здесь, иначе не работает =)
@@ -188,7 +210,7 @@ static void prevMode() {
 }
 void nextModeHandler() {
   thisMode++;
-  if (thisMode >= MODES_AMOUNT) thisMode = 0;
+  if (thisMode >= sizeOfEffects) thisMode = 0;
   loadingFlag = true;
   gamemodeFlag = false;
   FastLED.clear();
@@ -196,7 +218,7 @@ void nextModeHandler() {
 }
 void prevModeHandler() {
   thisMode--;
-  if (thisMode < 0) thisMode = MODES_AMOUNT - 1;
+  if (thisMode < 0) thisMode = sizeOfEffects - 1;
   loadingFlag = true;
   gamemodeFlag = false;
   FastLED.clear();
